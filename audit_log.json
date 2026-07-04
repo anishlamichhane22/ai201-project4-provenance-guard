@@ -1,0 +1,11 @@
+[
+  {
+    "content_id": "cbf422ae-fe8f-40c9-aabd-f924e494b4f8",
+    "creator_id": "test-user-1",
+    "timestamp": "2026-07-04T17:04:54.364714+00:00",
+    "llm_score": 0.42,
+    "confidence": 0.42,
+    "attribution": "placeholder - real scoring comes in Milestone 4",
+    "status": "classified"
+  }
+]
