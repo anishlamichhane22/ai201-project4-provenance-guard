@@ -263,5 +263,131 @@
     "confidence": 0.3429,
     "attribution": "likely_human",
     "status": "classified"
+  },
+  {
+    "content_id": "24dfadf4-ed6f-4609-a15a-d58e6d44e63d",
+    "creator_id": "user_ai",
+    "timestamp": "2026-07-04T19:27:57.654999+00:00",
+    "llm_score": 0.87,
+    "style_score": 0.2397,
+    "confidence": 0.6179,
+    "attribution": "uncertain",
+    "status": "under_review"
+  },
+  {
+    "content_id": "b38e4ee7-fc3b-4978-b745-92d0790b4dd1",
+    "creator_id": "user_human",
+    "timestamp": "2026-07-04T19:28:04.167321+00:00",
+    "llm_score": 0.21,
+    "style_score": 0.1203,
+    "confidence": 0.1741,
+    "attribution": "likely_human",
+    "status": "classified"
+  },
+  {
+    "content_id": "24dfadf4-ed6f-4609-a15a-d58e6d44e63d",
+    "creator_reasoning": "I wrote this myself for a formal essay assignment; the formal tone is intentional and does not mean it is AI-generated.",
+    "timestamp": "2026-07-04T19:28:12.200706+00:00",
+    "status": "under_review"
+  },
+  {
+    "content_id": "24bf5a05-a557-4314-8a17-60e019075d52",
+    "creator_id": "rate_test",
+    "timestamp": "2026-07-04T19:29:33.676697+00:00",
+    "llm_score": 0.42,
+    "style_score": 0.5,
+    "confidence": 0.452,
+    "attribution": "uncertain",
+    "status": "classified"
+  },
+  {
+    "content_id": "6a7bd55a-f77a-437b-9bc9-12b9930e42bc",
+    "creator_id": "rate_test",
+    "timestamp": "2026-07-04T19:29:34.032628+00:00",
+    "llm_score": 0.42,
+    "style_score": 0.5,
+    "confidence": 0.452,
+    "attribution": "uncertain",
+    "status": "classified"
+  },
+  {
+    "content_id": "b940a814-2b6a-4b28-9140-f475a32b87e5",
+    "creator_id": "rate_test",
+    "timestamp": "2026-07-04T19:29:34.385447+00:00",
+    "llm_score": 0.42,
+    "style_score": 0.5,
+    "confidence": 0.452,
+    "attribution": "uncertain",
+    "status": "classified"
+  },
+  {
+    "content_id": "0a62fa38-0fa2-483b-9782-ad21ea785df4",
+    "creator_id": "rate_test",
+    "timestamp": "2026-07-04T19:29:34.742269+00:00",
+    "llm_score": 0.42,
+    "style_score": 0.5,
+    "confidence": 0.452,
+    "attribution": "uncertain",
+    "status": "classified"
+  },
+  {
+    "content_id": "44340819-cae8-4858-8be6-7101e057a3bc",
+    "creator_id": "rate_test",
+    "timestamp": "2026-07-04T19:29:35.000836+00:00",
+    "llm_score": 0.42,
+    "style_score": 0.5,
+    "confidence": 0.452,
+    "attribution": "uncertain",
+    "status": "classified"
+  },
+  {
+    "content_id": "2278cff1-f20c-49b1-8e47-1665990f17b1",
+    "creator_id": "rate_test",
+    "timestamp": "2026-07-04T19:29:35.359115+00:00",
+    "llm_score": 0.42,
+    "style_score": 0.5,
+    "confidence": 0.452,
+    "attribution": "uncertain",
+    "status": "classified"
+  },
+  {
+    "content_id": "f1146648-296a-4ef3-b1ce-4b8cac10598a",
+    "creator_id": "rate_test",
+    "timestamp": "2026-07-04T19:29:35.636246+00:00",
+    "llm_score": 0.42,
+    "style_score": 0.5,
+    "confidence": 0.452,
+    "attribution": "uncertain",
+    "status": "classified"
+  },
+  {
+    "content_id": "5ddf0962-ec3f-416a-b2da-06d6788734aa",
+    "creator_id": "rate_test",
+    "timestamp": "2026-07-04T19:29:35.995005+00:00",
+    "llm_score": 0.42,
+    "style_score": 0.5,
+    "confidence": 0.452,
+    "attribution": "uncertain",
+    "status": "classified"
+  },
+  {
+    "content_id": "1069c2fd-8d7a-4a6d-b588-93fd0b5abb36",
+    "creator_id": "rate_test",
+    "timestamp": "2026-07-04T19:29:36.390291+00:00",
+    "llm_score": 0.42,
+    "style_score": 0.5,
+    "confidence": 0.452,
+    "attribution": "uncertain",
+    "status": "classified"
+  },
+  {
+    "content_id": "f50c81e8-3efa-47d0-80f1-49b7ddbb4aec",
+    "creator_id": "rate_test",
+    "timestamp": "2026-07-04T19:29:36.745502+00:00",
+    "llm_score": 0.42,
+    "style_score": 0.5,
+    "confidence": 0.452,
+    "attribution": "uncertain",
+    "status": "classified"
   }
 ]

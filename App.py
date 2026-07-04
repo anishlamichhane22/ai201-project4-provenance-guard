@@ -4,13 +4,23 @@ import uuid
 from datetime import datetime, timezone
  
 from flask import Flask, request, jsonify
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 from dotenv import load_dotenv
 from groq import Groq
+
+from stylometrics import get_stylometric_signal, compute_confidence, get_label
  
 load_dotenv()
  
 app = Flask(__name__)
- 
+
+limiter = Limiter(
+    key_func=get_remote_address,
+    app=app,
+    storage_uri="memory://",
+)
+
 groq_client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
  
 LOG_FILE = "audit_log.json"
@@ -30,6 +40,12 @@ def write_log_entry(entry):
     """Append a single entry to the audit log file."""
     entries = get_log()
     entries.append(entry)
+    with open(LOG_FILE, "w") as f:
+        json.dump(entries, f, indent=2)
+
+
+def write_log(entries):
+    """Overwrite the audit log file with the given list of entries."""
     with open(LOG_FILE, "w") as f:
         json.dump(entries, f, indent=2)
  
@@ -71,9 +87,32 @@ TEXT:
         return None
  
  
+# ---------- Label text ----------
+
+def generate_label_text(label):
+    """Maps a label key to the exact user-facing transparency label text."""
+    label_texts = {
+        "likely_ai": (
+            "This content shows strong signals of AI generation. Our system detected "
+            "patterns commonly associated with AI-written text across multiple "
+            "independent checks."
+        ),
+        "uncertain": (
+            "We can't confidently determine whether this content is AI-generated or "
+            "human-written. Our detection signals produced mixed or inconclusive results."
+        ),
+        "likely_human": (
+            "This content shows strong signals of human authorship. Our system found "
+            "patterns consistent with human writing across multiple independent checks."
+        ),
+    }
+    return label_texts.get(label, "")
+
+
 # ---------- Routes ----------
- 
+
 @app.route("/submit", methods=["POST"])
+@limiter.limit("10 per minute;100 per day")
 def submit():
     data = request.get_json(force=True, silent=True) or {}
     text = data.get("text")
@@ -85,33 +124,74 @@ def submit():
     content_id = str(uuid.uuid4())
  
     llm_score = get_llm_signal(text)
- 
+
     if llm_score is None:
         return jsonify({"error": "Detection signal failed. Please try again."}), 502
- 
-    # Placeholder confidence/label until Milestone 4 adds the second signal + real scoring
-    confidence = llm_score
-    label = "placeholder - real scoring comes in Milestone 4"
- 
+
+    style_score = get_stylometric_signal(text)
+    confidence = compute_confidence(llm_score, style_score)
+    label = get_label(confidence)
+    label_text = generate_label_text(label)
+
     log_entry = {
         "content_id": content_id,
         "creator_id": creator_id,
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "llm_score": llm_score,
+        "style_score": style_score,
         "confidence": confidence,
         "attribution": label,
         "status": "classified",
     }
     write_log_entry(log_entry)
- 
+
     return jsonify({
         "content_id": content_id,
         "attribution": label,
         "confidence": confidence,
         "label": label,
+        "label_text": label_text,
     })
  
  
+@app.route("/appeal", methods=["POST"])
+def appeal():
+    data = request.get_json(force=True, silent=True) or {}
+    content_id = data.get("content_id")
+    creator_reasoning = data.get("creator_reasoning")
+
+    if not content_id or not creator_reasoning:
+        return jsonify(
+            {"error": "Both 'content_id' and 'creator_reasoning' are required."}
+        ), 400
+
+    entries = get_log()
+    matched = [e for e in entries if e.get("content_id") == content_id]
+    if not matched:
+        return jsonify({"error": f"No content found with content_id '{content_id}'."}), 404
+
+    # Update the original classification entry's status to "under_review"
+    for e in entries:
+        if e.get("content_id") == content_id and e.get("status") == "classified":
+            e["status"] = "under_review"
+    write_log(entries)
+
+    # Append a new log entry recording the appeal
+    appeal_entry = {
+        "content_id": content_id,
+        "creator_reasoning": creator_reasoning,
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "status": "under_review",
+    }
+    write_log_entry(appeal_entry)
+
+    return jsonify({
+        "content_id": content_id,
+        "status": "under_review",
+        "message": "Your appeal has been received and the content is now under review.",
+    })
+
+
 @app.route("/log", methods=["GET"])
 def log():
     return jsonify({"entries": get_log()})
